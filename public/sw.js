@@ -1,5 +1,5 @@
 /* Paintpot Pals service worker: makes the app installable and work offline. */
-const CACHE = 'paintpot-v1';
+const CACHE = 'paintpot-v2';
 const CORE = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg', '/icon-192.png', '/icon-512.png', '/icon-maskable-512.png'];
 
 self.addEventListener('install', (event) => {
@@ -18,6 +18,8 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+  // never cache server functions (AI redraw status must always be fresh)
+  if (url.pathname.startsWith('/.netlify/')) return;
 
   // Pages: try the network first so updates appear straight away, fall back to cache offline.
   if (req.mode === 'navigate') {
@@ -33,7 +35,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Everything else (hashed JS/CSS, fonts, icons): cache first, then network.
+  // Hashed build files, fonts and icons never change: cache first, then network.
+  const isStatic = url.pathname.startsWith('/assets/') || /\.(png|svg|webmanifest|woff2?)$/.test(url.pathname);
+  if (!isStatic) return;
   event.respondWith(
     caches.match(req).then(
       (hit) =>
