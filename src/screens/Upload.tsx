@@ -8,8 +8,6 @@ import { detectRegions } from '../lib/regionClient';
 import { newId, saveProject } from '../lib/storage';
 import { navigate } from '../lib/router';
 import { hslToHex, hexToRgb } from '../lib/colors';
-import { getAiStatus, type AiStatus } from '../lib/aiRedraw';
-import { AiRedrawDialog } from '../components/AiRedrawDialog';
 
 const FINAL_SIDE = 1600;
 const PREVIEW_SIDE = 720;
@@ -21,19 +19,6 @@ interface Loaded {
   preview: ImageData;
   originalUrl: string;
   looksLikeDrawing: boolean;
-  /** set when this is an AI redraw; holds the picture it was made from */
-  original?: Loaded;
-}
-
-function makeLoaded(img: HTMLImageElement, name: string, url: string): Loaded {
-  const full = imageToCanvas(img, FINAL_SIDE);
-  const ps = Math.min(1, PREVIEW_SIDE / Math.max(full.width, full.height));
-  const pc = createCanvas(Math.round(full.width * ps), Math.round(full.height * ps));
-  const pctx = ctx2d(pc);
-  pctx.imageSmoothingQuality = 'high';
-  pctx.drawImage(full, 0, 0, pc.width, pc.height);
-  const preview = pctx.getImageData(0, 0, pc.width, pc.height);
-  return { name, full, preview, originalUrl: url, looksLikeDrawing: analyzeImage(preview).looksLikeDrawing };
 }
 
 export function Upload() {
@@ -55,8 +40,16 @@ export function Upload() {
     try {
       const url = URL.createObjectURL(file);
       const img = await loadImage(url);
+      const full = imageToCanvas(img, FINAL_SIDE);
+      const ps = Math.min(1, PREVIEW_SIDE / Math.max(full.width, full.height));
+      const pc = createCanvas(Math.round(full.width * ps), Math.round(full.height * ps));
+      const pctx = ctx2d(pc);
+      pctx.imageSmoothingQuality = 'high';
+      pctx.drawImage(full, 0, 0, pc.width, pc.height);
+      const preview = pctx.getImageData(0, 0, pc.width, pc.height);
+      const a = analyzeImage(preview);
       const base = file.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim();
-      setLoaded(makeLoaded(img, base ? base[0].toUpperCase() + base.slice(1, 40) : 'My drawing', url));
+      setLoaded({ name: base ? base[0].toUpperCase() + base.slice(1, 40) : 'My drawing', full, preview, originalUrl: url, looksLikeDrawing: a.looksLikeDrawing });
     } catch {
       setError("Oops! We couldn't open that picture. Try a PNG or JPG.");
     } finally {
@@ -70,7 +63,7 @@ export function Upload() {
     void onFile(e.dataTransfer.files?.[0]);
   };
 
-  if (loaded) return <Adjust key={loaded.originalUrl} loaded={loaded} onBack={() => setLoaded(null)} onReplace={setLoaded} />;
+  if (loaded) return <Adjust loaded={loaded} onBack={() => setLoaded(null)} />;
 
   return (
     <div className="home-bg min-h-full">
@@ -140,19 +133,9 @@ function Slider({ label, value, min, max, onChange, hint }: { label: string; val
   );
 }
 
-function Adjust({ loaded, onBack, onReplace }: { loaded: Loaded; onBack: () => void; onReplace: (l: Loaded) => void }) {
+function Adjust({ loaded, onBack }: { loaded: Loaded; onBack: () => void }) {
   const [s, setS] = useState<ConvertSettings>(() => ({ ...DEFAULT_CONVERT, mode: loaded.looksLikeDrawing ? 'drawing' : 'photo', sensitivity: loaded.looksLikeDrawing ? 50 : 45 }));
-  const [gap, setGap] = useState(loaded.original ? 1 : loaded.looksLikeDrawing ? 2 : 3);
-  const [ai, setAi] = useState<AiStatus | null>(null);
-  const [aiOpen, setAiOpen] = useState(false);
-  useEffect(() => {
-    void getAiStatus().then(setAi);
-  }, []);
-  const onAiResult = async (dataUrl: string) => {
-    const img = await loadImage(dataUrl);
-    const next = makeLoaded(img, loaded.name, dataUrl);
-    onReplace({ ...next, looksLikeDrawing: true, original: loaded.original ?? loaded });
-  };
+  const [gap, setGap] = useState(loaded.looksLikeDrawing ? 2 : 3);
   const [zones, setZones] = useState(false);
   const [info, setInfo] = useState<{ spaces: number; biggest: number } | null>(null);
   const [working, setWorking] = useState(false);
@@ -265,7 +248,7 @@ function Adjust({ loaded, onBack, onReplace }: { loaded: Loaded; onBack: () => v
         <section className="panel p-3 sm:p-4">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <div className="text-sm font-semibold text-ink/60">
-              {loaded.original ? '✨ Here is your magic colouring page!' : loaded.looksLikeDrawing ? '✏️ This looks like a drawing!' : '📸 This looks like a photo — we turned it into outlines.'}
+              {loaded.looksLikeDrawing ? '✏️ This looks like a drawing!' : '📸 This looks like a photo — we turned it into outlines.'}
             </div>
             <button
               role="switch"
@@ -279,7 +262,7 @@ function Adjust({ loaded, onBack, onReplace }: { loaded: Loaded; onBack: () => v
           <div className="relative grid gap-3 sm:grid-cols-[140px_1fr]">
             <div className="hidden sm:block">
               <div className="label mb-1">Original</div>
-              <img src={(loaded.original ?? loaded).originalUrl} alt="Your original picture" className="checker w-full rounded-xl object-contain shadow-pop-sm" />
+              <img src={loaded.originalUrl} alt="Your original picture" className="checker w-full rounded-xl object-contain shadow-pop-sm" />
             </div>
             <div className="relative">
               <div className="label mb-1">Colouring page</div>
@@ -301,28 +284,6 @@ function Adjust({ loaded, onBack, onReplace }: { loaded: Loaded; onBack: () => v
         </section>
 
         <section className="panel space-y-5 p-4">
-          {loaded.original ? (
-            <div className="rounded-2xl bg-grape-50 p-3">
-              <div className="font-bold text-grape-700">✨ Redrawn by AI magic</div>
-              <div className="mt-2 flex gap-2">
-                <button className="btn flex-1 bg-white py-2 text-sm shadow-pop-sm" onClick={() => onReplace(loaded.original!)}>
-                  ↩️ Use my original
-                </button>
-                {ai?.enabled && (
-                  <button className="btn flex-1 bg-white py-2 text-sm shadow-pop-sm" onClick={() => setAiOpen(true)}>
-                    🔁 Redraw again
-                  </button>
-                )}
-              </div>
-            </div>
-          ) : (
-            ai?.enabled && (
-              <button className="btn w-full flex-col gap-0 bg-gradient-to-r from-grape-500 via-bubble-400 to-tangerine-400 py-3 text-white shadow-pop" onClick={() => setAiOpen(true)}>
-                <span className="text-lg">✨ AI Magic Redraw</span>
-                <span className="text-xs font-medium opacity-90">Turns any picture into perfect colouring lines</span>
-              </button>
-            )
-          )}
           <label className="block">
             <div className="label mb-1">Name</div>
             <input value={name} onChange={(e) => setName(e.target.value)} maxLength={40} className="w-full rounded-xl border-2 border-grape-100 px-3 py-2 text-lg font-semibold focus:border-grape-400 focus:outline-none" />
@@ -365,16 +326,6 @@ function Adjust({ loaded, onBack, onReplace }: { loaded: Loaded; onBack: () => v
           </button>
         </section>
       </main>
-      <AiRedrawDialog
-        open={aiOpen}
-        onClose={() => setAiOpen(false)}
-        source={(loaded.original ?? loaded).full}
-        passcodeRequired={!!ai?.passcode}
-        onResult={(url) => {
-          setAiOpen(false);
-          void onAiResult(url);
-        }}
-      />
     </div>
   );
 }

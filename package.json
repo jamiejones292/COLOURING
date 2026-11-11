@@ -6,23 +6,21 @@
   "description": "Paintpot Pals – a magical colouring book for children that always stays inside the lines.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && tsc -p netlify/tsconfig.json && vite build",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc -b && tsc -p netlify/tsconfig.json"
+    "typecheck": "tsc -b"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
     "@fontsource/fredoka": "^5.1.0",
-    "@netlify/blobs": "^8.1.0",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20.17.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

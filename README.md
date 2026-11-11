@@ -136,30 +136,6 @@ tests/                    Vitest unit tests
 netlify.toml              Netlify build & headers
 ```
 
-## ✨ AI Magic Redraw (optional)
-
-On the upload screen, **AI Magic Redraw** sends the picture to OpenAI's image model (`gpt-image-1`). It comes back redrawn as a clean colouring page with thick, closed outlines. The button only appears once you've added an API key, so the rest of the app stays free and fully offline-capable.
-
-**How it works:**
-* Three Netlify Functions in `netlify/functions` handle it, so your key never reaches the browser.
-* `ai-start` stores the picture and starts `ai-redraw-background`, which can run for up to 15 minutes. The app then checks `ai-status`.
-* Pictures are kept in Netlify Blobs only until the app collects the result, then deleted.
-
-**Turn it on:**
-1. Create an API key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys) and add billing credit. Set a **monthly spending limit** under *Settings → Limits*.
-2. In Netlify go to **Site configuration → Environment variables → Add a variable** and add:
-
-   | Variable | Value | |
-   |---|---|---|
-   | `OPENAI_API_KEY` | `sk-…` | **required** |
-   | `AI_PASSCODE` | e.g. `rainbow42` | **strongly recommended.** A grown-up types it once per device. Without it, anyone who finds your site could use your credit. |
-   | `AI_DAILY_LIMIT` | `40` (default) | maximum redraws per day for the whole site |
-   | `AI_QUALITY` | `medium` (default), `low` or `high` | `low` is cheaper and faster |
-
-3. **Deploys → Trigger deploy → Deploy site**. The ✨ button now appears after uploading a picture.
-
-Cost: roughly $0.01 (`low`) to $0.07 (`medium`) per picture with gpt-image-1, depending on the picture.
-
 ## 📱 Install as an app
 
 Paintpot Pals is a Progressive Web App: it has a manifest, app icons (including a maskable icon for Android) and a service worker. Once it has been opened once, it also works offline.
@@ -172,4 +148,4 @@ The site must be **public** for installing to work everywhere. Netlify's passwor
 
 ## 🔒 Privacy
 
-No ads, analytics, cookies or accounts. The app makes no network requests, except for the optional AI Magic Redraw, which only runs when a grown-up confirms it. Fonts are bundled with the app. Uploaded pictures are processed on the device and never uploaded. Saved artwork lives only in that browser's storage.
+No ads, analytics, cookies, accounts or network requests. Fonts are bundled with the app. Uploaded pictures are processed on the device and never uploaded. Saved artwork lives only in that browser's storage.
