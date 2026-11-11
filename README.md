@@ -136,6 +136,16 @@ tests/                    Vitest unit tests
 netlify.toml              Netlify build & headers
 ```
 
+## 📱 Install as an app
+
+Paintpot Pals is a Progressive Web App: it has a manifest, app icons (including a maskable icon for Android) and a service worker. Once it has been opened once, it also works offline.
+
+* **Android / Chrome / Edge:** menu ⋮ → **Install app** (or **Add to Home screen**).
+* **iPad / iPhone (Safari):** Share → **Add to Home Screen**.
+* **Desktop Chrome / Edge:** the install icon in the address bar.
+
+The site must be **public** for installing to work everywhere. Netlify's password/pre-launch protection blocks the files the browser needs.
+
 ## 🔒 Privacy
 
 No ads, analytics, cookies, accounts or network requests. Fonts are bundled with the app. Uploaded pictures are processed on the device and never uploaded. Saved artwork lives only in that browser's storage.
