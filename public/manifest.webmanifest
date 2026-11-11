@@ -1,0 +1,14 @@
+{
+  "name": "Paintpot Pals",
+  "short_name": "Paintpot",
+  "description": "A magic colouring book for kids that stays inside the lines.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fff7e8",
+  "theme_color": "#7c5cff",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

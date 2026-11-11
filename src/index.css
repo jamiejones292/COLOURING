@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --cream: #fff7e8;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: #2b2350;
+  font-family: Fredoka, ui-rounded, system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+button { -webkit-user-select: none; user-select: none; }
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl font-semibold transition
+      active:translate-y-[2px] focus:outline-none focus-visible:ring-4 focus-visible:ring-grape-400/60
+      disabled:opacity-40 disabled:pointer-events-none;
+  }
+  .btn-icon {
+    @apply btn h-11 w-11 bg-white text-ink shadow-pop-sm hover:bg-grape-50 active:shadow-none;
+  }
+  .panel {
+    @apply rounded-3xl bg-white/90 shadow-soft backdrop-blur;
+  }
+  .chip {
+    @apply btn px-4 py-2 text-sm shadow-pop-sm bg-white hover:bg-grape-50;
+  }
+  .label {
+    @apply text-xs font-semibold uppercase tracking-wider text-ink/50;
+  }
+}
+
+/* decorative home background */
+.home-bg {
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 210, 63, 0.35) 0 90px, transparent 91px),
+    radial-gradient(circle at 92% 12%, rgba(255, 111, 177, 0.28) 0 120px, transparent 121px),
+    radial-gradient(circle at 85% 85%, rgba(79, 192, 255, 0.28) 0 140px, transparent 141px),
+    radial-gradient(circle at 5% 90%, rgba(79, 224, 176, 0.3) 0 110px, transparent 111px),
+    var(--cream);
+}
+
+/* workspace themes */
+.theme-sunshine { background: radial-gradient(#ffd23f55 2px, transparent 2.5px) 0 0/26px 26px, linear-gradient(160deg, #fff6d6, #ffe7b8); }
+.theme-ocean { background: radial-gradient(#ffffff88 2px, transparent 2.5px) 0 0/30px 30px, linear-gradient(170deg, #bfeaff, #7fd0f7); }
+.theme-space { background: radial-gradient(#ffffffcc 1.2px, transparent 1.7px) 0 0/34px 34px, radial-gradient(#ffffff77 1px, transparent 1.5px) 17px 17px/34px 34px, linear-gradient(170deg, #2a2266, #120f35); }
+.theme-candy { background: repeating-linear-gradient(45deg, #ffe0f0 0 22px, #ffd0e8 22px 44px); }
+.theme-meadow { background: radial-gradient(#ffffff99 2px, transparent 2.5px) 0 0/28px 28px, linear-gradient(170deg, #d9f7c4, #a7e58b); }
+.theme-plain { background: #eef0f6; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+.stage { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.checker {
+  background: conic-gradient(#f1f1f5 25%, #fff 0 50%, #f1f1f5 0 75%, #fff 0) 0 0/20px 20px;
+}
+
+input[type='range'].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  border-radius: 999px;
+  background: #ece6ff;
+  outline: none;
+}
+input[type='range'].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #7c5cff; border: 4px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+input[type='range'].slider::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #7c5cff; border: 4px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+input[type='range'].hue {
+  background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+
+#print-area { display: none; }
+@media print {
+  @page { margin: 12mm; }
+  body { background: #fff; }
+  #root { display: none !important; }
+  #print-area { display: flex !important; align-items: center; justify-content: center; height: 100%; }
+  #print-area img { max-width: 100%; max-height: 100vh; object-fit: contain; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
