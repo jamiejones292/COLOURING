@@ -86,6 +86,28 @@ export async function renderSvgInk(svg: string, w: number, h: number): Promise<H
   return c;
 }
 
+/** Render a black-on-white line-art image to an ink canvas of the given size. */
+export async function renderImageInk(url: string, w: number, h: number): Promise<HTMLCanvasElement> {
+  const img = await loadImage(url);
+  const c = createCanvas(w, h);
+  const ctx = ctx2d(c);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(img, 0, 0, w, h);
+  const ink = luminanceToInk(ctx.getImageData(0, 0, w, h));
+  ctx.clearRect(0, 0, w, h);
+  ctx.putImageData(ink, 0, 0);
+  return c;
+}
+
+/** Ink canvas for a built-in page, whether it is an SVG drawing or a picture. */
+export function renderPageInk(page: { svg?: string; image?: string }, size: number): Promise<HTMLCanvasElement> {
+  if (page.svg) return renderSvgInk(page.svg, size, size);
+  if (page.image) return renderImageInk(page.image, size, size);
+  return Promise.reject(new Error('That page is missing.'));
+}
+
 /** Draw a loaded image onto a canvas, scaled to fit `maxSide`. */
 export function imageToCanvas(img: HTMLImageElement, maxSide: number): HTMLCanvasElement {
   let w = img.naturalWidth || img.width || 1200;

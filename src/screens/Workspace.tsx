@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 import { ColoringEngine, type FillStyle, type Tool } from '../lib/engine';
 import { getPage, type ColoringPage } from '../data/pages';
-import { blobToCanvas, canvasToBlob, renderSvgInk } from '../lib/imageProcessing';
+import { blobToCanvas, canvasToBlob, renderPageInk } from '../lib/imageProcessing';
 import { getProject, newId, saveProject, type Project } from '../lib/storage';
 import { navigate } from '../lib/router';
 import { getPref, setPref } from '../lib/prefs';
@@ -175,7 +175,7 @@ export function Workspace({ pageId, projectId }: { pageId?: string; projectId?: 
           if (proj.source.type === 'preset') {
             page = getPage(proj.source.pageId);
             if (!page) throw new Error('That page is missing.');
-            ink = await renderSvgInk(page.svg, PAGE_SIZE, PAGE_SIZE);
+            ink = await renderPageInk(page, PAGE_SIZE);
           } else {
             ink = await blobToCanvas(proj.source.lineArt);
           }
@@ -183,7 +183,7 @@ export function Workspace({ pageId, projectId }: { pageId?: string; projectId?: 
         } else {
           page = getPage(pageId!);
           if (!page) throw new Error('That page is missing.');
-          ink = await renderSvgInk(page.svg, PAGE_SIZE, PAGE_SIZE);
+          ink = await renderPageInk(page, PAGE_SIZE);
           g = page.gap ?? 0;
         }
         if (cancelled) return;

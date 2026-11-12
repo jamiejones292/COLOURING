@@ -12,7 +12,7 @@ export function PageCard({ page, onOpen, index = 0 }: { page: ColoringPage; onOp
       aria-label={`Colour ${page.title}`}
     >
       <div className="relative aspect-square w-full border-b-4 p-3" style={{ borderColor: (cat?.color ?? '#7c5cff') + '55' }}>
-        <PageThumb svg={page.svg} alt="" />
+        <PageThumb svg={page.svg} src={page.thumb} alt="" />
       </div>
       <div className="flex items-center gap-2 px-3 py-2.5">
         <span className="text-xl" aria-hidden="true">{cat?.emoji}</span>

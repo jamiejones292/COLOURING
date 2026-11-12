@@ -20,13 +20,20 @@ export const CATEGORIES: Category[] = [
   { id: 'nature', name: 'Nature & Flowers', emoji: '🌻', color: '#5fcf3a' },
   { id: 'farm', name: 'On the Farm', emoji: '🐮', color: '#e8a04a' },
   { id: 'fantasy', name: 'Fantasy Friends', emoji: '🐉', color: '#ef4444' },
+  { id: 'angels', name: 'Angels', emoji: '👼', color: '#f59ec4' },
+  { id: 'christmas', name: 'Christmas Elves', emoji: '🎄', color: '#16a34a' },
 ];
 
 export interface ColoringPage {
   id: string;
   title: string;
   category: string;
-  svg: string;
+  /** vector line art (built-in drawings) */
+  svg?: string;
+  /** URL of a black-on-white line-art image (picture pages) */
+  image?: string;
+  /** small preview image for the gallery */
+  thumb?: string;
   /** suggested gap-closing for this page (preset pages are fully closed) */
   gap?: number;
   /** nice for mirror mode */
@@ -584,6 +591,35 @@ export const PAGES: ColoringPage[] = [
   { id: 'dragon', title: 'Little Dragon', category: 'fantasy', svg: dragon },
   { id: 'monster', title: 'Fuzzy Monster', category: 'fantasy', svg: monster, symmetric: true },
 ];
+
+// ----------------------------------------------------------- picture pages
+
+const pictureUrls = import.meta.glob('./pictures/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+const thumbUrls = import.meta.glob('./pictures/thumbs/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+
+function picture(id: string, title: string, category: string, gap = 1): ColoringPage {
+  return { id, title, category, image: pictureUrls[`./pictures/${id}.png`], thumb: thumbUrls[`./pictures/thumbs/${id}.png`], gap };
+}
+
+PAGES.push(
+  picture('puppy-sunny', 'Sunny Puppy', 'animals'),
+  picture('puppy-puddle', 'Puddle Puppy', 'animals'),
+  picture('puppy-party', 'Party Puppy', 'animals'),
+  picture('puppy-flowers', 'Puppy in the Flowers', 'animals'),
+  picture('puppy-ball', 'Puppy & Ball', 'animals'),
+  picture('elephant-baby', 'Baby Elephant', 'animals'),
+  picture('elephant-walk', 'Happy Elephant', 'animals'),
+  picture('elephant-sunny', 'Sunny Elephant', 'animals'),
+  picture('elephant-flower', 'Elephant & Flower', 'animals'),
+  picture('angel-clouds', 'Angel in the Clouds', 'angels'),
+  picture('angel-heart', 'Angel with a Heart', 'angels'),
+  picture('angel-kneeling', 'Little Angel', 'angels'),
+  picture('angel-peaceful', 'Peaceful Angel', 'angels'),
+  picture('elf-waving', 'Waving Elf', 'christmas'),
+  picture('elf-stocking', 'Elf & Stocking', 'christmas'),
+  picture('elf-snowflakes', 'Elf & Snowflakes', 'christmas'),
+  picture('elf-tree', 'Elf & Christmas Tree', 'christmas'),
+);
 
 export const getPage = (id: string) => PAGES.find((p) => p.id === id);
 export const getCategory = (id: string) => CATEGORIES.find((c) => c.id === id);

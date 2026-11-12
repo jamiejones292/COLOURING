@@ -8,7 +8,7 @@ import { navigate } from '../lib/router';
 import { openPage } from '../lib/openPage';
 import { listProjects, type Project } from '../lib/storage';
 
-const FEATURED = ['unicorn', 'trex', 'rocket', 'lion', 'castle', 'octopus', 'butterfly', 'fire-truck'];
+const FEATURED = ['unicorn', 'puppy-party', 'trex', 'elf-waving', 'rocket', 'angel-heart', 'lion', 'elephant-flower'];
 
 export function Home() {
   const [ask, setAsk] = useState<Project | null>(null);
