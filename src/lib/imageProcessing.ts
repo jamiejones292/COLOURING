@@ -86,9 +86,17 @@ export async function renderSvgInk(svg: string, w: number, h: number): Promise<H
   return c;
 }
 
-/** Render a black-on-white line-art image to an ink canvas of the given size. */
-export async function renderImageInk(url: string, w: number, h: number): Promise<HTMLCanvasElement> {
+/**
+ * Render a black-on-white line-art image to an ink canvas whose longest side
+ * is `maxSide`, keeping the picture's own shape (portrait, landscape or square).
+ */
+export async function renderImageInk(url: string, maxSide: number): Promise<HTMLCanvasElement> {
   const img = await loadImage(url);
+  const iw = img.naturalWidth || maxSide;
+  const ih = img.naturalHeight || maxSide;
+  const s = maxSide / Math.max(iw, ih);
+  const w = Math.round(iw * s);
+  const h = Math.round(ih * s);
   const c = createCanvas(w, h);
   const ctx = ctx2d(c);
   ctx.fillStyle = '#fff';
@@ -104,7 +112,7 @@ export async function renderImageInk(url: string, w: number, h: number): Promise
 /** Ink canvas for a built-in page, whether it is an SVG drawing or a picture. */
 export function renderPageInk(page: { svg?: string; image?: string }, size: number): Promise<HTMLCanvasElement> {
   if (page.svg) return renderSvgInk(page.svg, size, size);
-  if (page.image) return renderImageInk(page.image, size, size);
+  if (page.image) return renderImageInk(page.image, size);
   return Promise.reject(new Error('That page is missing.'));
 }
 

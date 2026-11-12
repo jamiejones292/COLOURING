@@ -1,7 +1,3 @@
-import {
-  black, c, clipped, cloud, e, eye, g, ground, heart, l, mirror, p, petals, poly, r, scallop, scallopPath, star, sun, svg, tinyFlower,
-} from './svgKit';
-
 export interface Category {
   id: string;
   name: string;
@@ -10,16 +6,15 @@ export interface Category {
 }
 
 export const CATEGORIES: Category[] = [
-  { id: 'animals', name: 'Animals', emoji: '🦁', color: '#ffbf1f' },
+  { id: 'kids', name: 'Kids & Friends', emoji: '🧒', color: '#ff7a1a' },
   { id: 'dinosaurs', name: 'Dinosaurs', emoji: '🦕', color: '#1fc995' },
-  { id: 'princess', name: 'Princesses & Castles', emoji: '👑', color: '#ff6fb1' },
-  { id: 'vehicles', name: 'Cars & Trains', emoji: '🚂', color: '#ff7a1a' },
+  { id: 'animals', name: 'Animals', emoji: '🐶', color: '#ffbf1f' },
+  { id: 'flowers', name: 'Flowers & Gardens', emoji: '🌻', color: '#5fcf3a' },
+  { id: 'party', name: 'Balloons & Parties', emoji: '🎈', color: '#ff4797' },
   { id: 'space', name: 'Space', emoji: '🚀', color: '#7c5cff' },
-  { id: 'ocean', name: 'Under the Sea', emoji: '🐠', color: '#1ea7f5' },
-  { id: 'magic', name: 'Unicorns & Magic', emoji: '🦄', color: '#c084fc' },
-  { id: 'nature', name: 'Nature & Flowers', emoji: '🌻', color: '#5fcf3a' },
-  { id: 'farm', name: 'On the Farm', emoji: '🐮', color: '#e8a04a' },
-  { id: 'fantasy', name: 'Fantasy Friends', emoji: '🐉', color: '#ef4444' },
+  { id: 'rainy', name: 'Rainy Days', emoji: '☔', color: '#1ea7f5' },
+  { id: 'treats', name: 'Yummy Treats', emoji: '🧁', color: '#e879a6' },
+  { id: 'silly', name: 'Silly Friends', emoji: '👾', color: '#a855f7' },
   { id: 'angels', name: 'Angels', emoji: '👼', color: '#f59ec4' },
   { id: 'christmas', name: 'Christmas Elves', emoji: '🎄', color: '#16a34a' },
 ];
@@ -28,572 +23,17 @@ export interface ColoringPage {
   id: string;
   title: string;
   category: string;
-  /** vector line art (built-in drawings) */
+  /** vector line art (optional — not used by the current library) */
   svg?: string;
-  /** URL of a black-on-white line-art image (picture pages) */
+  /** URL of a black-on-white line-art image */
   image?: string;
   /** small preview image for the gallery */
   thumb?: string;
-  /** suggested gap-closing for this page (preset pages are fully closed) */
+  /** "Leak guard" (gap closing, in px) that suits this page */
   gap?: number;
-  /** nice for mirror mode */
-  symmetric?: boolean;
 }
 
-// ------------------------------------------------------------------ animals
-
-const lion = svg(
-  scallop(300, 300, 185, 18) +
-    c(208, 196, 40) + c(208, 196, 20) + c(392, 196, 40) + c(392, 196, 20) +
-    c(300, 312, 122) +
-    e(300, 372, 64, 46) +
-    eye(255, 286, 16) + eye(345, 286, 16) +
-    c(222, 346, 14) + c(378, 346, 14) +
-    p('M276 342 Q300 330 324 342 Q314 362 300 364 Q286 362 276 342 Z') +
-    l('M300 364 L300 382 M300 382 Q285 398 270 388 M300 382 Q315 398 330 388') +
-    c(262, 370, 3, black) + c(250, 382, 3, black) + c(338, 370, 3, black) + c(350, 382, 3, black),
-);
-
-const elephant = svg(
-  ground(520, 3, 8) +
-    l('M488 330 Q520 360 512 410') + e(512, 420, 10, 16) +
-    r(250, 390, 56, 120, 20) + r(400, 390, 56, 120, 20) + r(320, 400, 56, 110, 20) +
-    e(360, 340, 145, 105) +
-    l('M262 500 Q270 490 278 500 M412 500 Q420 490 428 500 M332 500 Q340 490 348 500') +
-    p('M140 320 Q105 400 118 452 Q126 480 152 472 Q164 466 158 444 Q150 400 190 345 Z') +
-    c(210, 280, 95) +
-    e(262, 288, 64, 82) + e(268, 294, 42, 58) +
-    eye(172, 262, 11) +
-    l('M150 330 Q170 340 188 332') +
-    c(150, 300, 10),
-);
-
-const cat = svg(
-  p('M392 470 Q520 470 510 360 Q505 318 474 330 Q452 342 470 362 Q480 420 396 432 Z') +
-    p('M200 505 Q188 360 300 330 Q412 360 400 505 Z') +
-    e(300, 430, 55, 62) +
-    e(250, 505, 40, 20) + e(350, 505, 40, 20) +
-    poly('205,205 220,108 282,165') + poly('395,205 380,108 318,165') +
-    c(300, 250, 95) +
-    poly('225,172 230,135 255,160') + poly('375,172 370,135 345,160') +
-    eye(265, 240, 15) + eye(335, 240, 15) +
-    p('M288 270 L312 270 L300 284 Z') +
-    l('M300 284 Q300 298 286 300 M300 284 Q300 298 314 300') +
-    l('M238 280 L180 268 M238 292 L180 298 M362 280 L420 268 M362 292 L420 298') +
-    c(140, 482, 45) + l('M108 462 Q140 480 172 456 M104 492 Q140 512 178 486') + l('M184 490 Q200 520 180 540'),
-);
-
-const owl = svg(
-  c(500, 105, 45) + c(485, 95, 10) + c(515, 125, 7) +
-    star(95, 95, 26) + star(150, 170, 14) + star(520, 230, 16) +
-    p('M40 468 Q300 448 560 478 L560 504 Q300 476 40 498 Z') +
-    poly('192,205 198,118 252,160') + poly('408,205 402,118 348,160') +
-    p('M300 140 C400 140 430 260 430 330 C430 430 370 480 300 480 C230 480 170 430 170 330 C170 260 200 140 300 140 Z') +
-    e(300, 385, 85, 85) +
-    l('M265 360 L280 375 L295 360 M305 360 L320 375 L335 360 M245 400 L260 415 L275 400 M285 400 L300 415 L315 400 M325 400 L340 415 L355 400') +
-    p('M180 285 Q122 362 175 440 Q215 380 196 292 Z') + p('M420 285 Q478 362 425 440 Q385 380 404 292 Z') +
-    c(250, 250, 47) + c(350, 250, 47) + c(250, 252, 22) + c(350, 252, 22) +
-    eye(250, 254, 12) + eye(350, 254, 12) +
-    poly('284,288 316,288 300,318') +
-    e(268, 478, 22, 12) + e(332, 478, 22, 12),
-);
-
-const puppy = svg(
-  ground(540, 4, 8) +
-    p('M395 470 Q470 450 470 390 Q478 380 486 392 Q490 470 400 498 Z') +
-    p('M205 525 Q195 340 300 320 Q405 340 395 525 Z') +
-    e(300, 440, 55, 65) +
-    e(255, 524, 40, 20) + e(345, 524, 40, 20) +
-    c(300, 230, 98) +
-    p('M218 160 Q160 170 165 270 Q170 320 205 300 Q230 260 230 190 Z') +
-    p('M382 160 Q440 170 435 270 Q430 320 395 300 Q370 260 370 190 Z') +
-    p('M320 150 Q370 150 372 200 Q360 238 330 226 Q310 200 320 150 Z') +
-    e(300, 285, 58, 42) +
-    eye(262, 215, 14) + eye(338, 215, 14) +
-    e(300, 266, 19, 13, black) +
-    l('M300 279 L300 296 M300 296 Q284 312 270 300 M300 296 Q316 312 330 300') +
-    p('M228 322 Q300 350 372 322 L372 340 Q300 368 228 340 Z') +
-    c(300, 362, 16),
-);
-
-// --------------------------------------------------------------- dinosaurs
-
-const stegosaurus = svg(
-  ground(520, 4, 8) +
-    poly('195,282 205,212 240,262') + poly('245,252 265,170 300,240') + poly('305,240 330,160 360,238') +
-    poly('365,246 395,178 418,258') + poly('420,270 452,214 462,292') +
-    poly('545,292 558,240 570,296') + poly('515,312 520,262 540,316') +
-    p('M460 330 Q540 330 578 270 Q565 335 470 382 Z') +
-    r(190, 345, 52, 155, 18) + r(400, 345, 52, 155, 18) + r(250, 360, 52, 140, 18) + r(340, 360, 52, 140, 18) +
-    p('M150 360 Q170 230 320 230 Q472 230 492 360 Q320 410 150 360 Z') +
-    c(265, 300, 17) + c(330, 282, 21) + c(400, 306, 15) +
-    p('M160 330 Q120 322 95 296 Q55 272 52 318 Q60 368 172 376 Z') +
-    eye(80, 310, 7) + l('M58 335 Q78 346 100 342'),
-);
-
-const brachiosaurus = svg(
-  ground(525, 4, 8) +
-    p('M505 525 Q515 400 492 300 L512 298 Q538 400 530 525 Z') +
-    e(455, 290, 60, 18, 'transform="rotate(-25 455 290)"') + e(560, 285, 55, 18, 'transform="rotate(25 560 285)"') +
-    e(470, 255, 50, 16, 'transform="rotate(-60 470 255)"') + e(545, 252, 50, 16, 'transform="rotate(60 545 252)"') +
-    c(500, 296, 12) + c(518, 304, 12) +
-    p('M362 378 Q450 420 495 485 Q430 452 352 420 Z') +
-    r(140, 400, 52, 120, 18) + r(305, 400, 52, 120, 18) + r(195, 410, 50, 110, 18) + r(255, 410, 50, 110, 18) +
-    e(250, 385, 145, 82) +
-    c(210, 360, 18) + c(270, 345, 14) + c(310, 385, 20) + c(220, 410, 12) +
-    p('M140 370 Q125 220 195 118 L258 132 Q200 228 232 352 Z') +
-    e(225, 112, 58, 32) +
-    eye(242, 102, 9) + c(180, 104, 4, black) + l('M180 122 Q205 132 230 126'),
-);
-
-const babyDino = svg(
-  ground(540, 5, 10) +
-    c(300, 255, 102) +
-    e(225, 280, 48, 38) +
-    p('M228 172 L258 140 L290 164 L320 132 L350 162 L372 146 Q372 92 300 90 Q226 94 228 172 Z') +
-    eye(268, 236, 16) + eye(336, 236, 16) +
-    c(190, 270, 5, black) +
-    c(248, 296, 12) + c(360, 286, 12) +
-    l('M276 300 Q300 318 326 298') +
-    p('M150 330 L190 300 L230 335 L270 300 L310 335 L350 300 L390 335 L430 300 L452 330 Q462 525 300 532 Q138 525 150 330 Z') +
-    e(208, 318, 30, 20) + e(392, 318, 30, 20) +
-    c(222, 432, 22) + c(332, 472, 26) + c(386, 398, 16) + c(260, 380, 12),
-);
-
-const trex = svg(
-  ground(540, 4, 8) +
-    p('M40 300 L92 172 L136 172 L188 300 Z') + l('M92 172 Q102 152 114 162 Q126 150 136 172') + cloud(118, 140, 80) +
-    poly('300,232 330,196 334,248') + poly('266,290 290,252 302,304') + poly('232,350 250,312 268,364') +
-    p('M110 488 Q220 430 262 336 Q282 236 342 196 Q342 118 402 110 L482 110 Q532 112 532 160 L532 190 Q530 216 502 216 L422 216 Q412 262 422 302 Q442 402 382 452 Q322 492 262 472 Q200 472 110 488 Z') +
-    clipped('M330 260 Q392 250 410 330 Q416 410 360 440 Q320 420 318 340 Q316 290 330 260 Z', l('M300 300 L430 290 M300 340 L430 330 M300 380 L430 370 M300 420 L430 410')) +
-    l('M440 192 L526 192') + poly('452,192 462,206 472,192') + poly('494,192 504,206 514,192') +
-    eye(452, 150, 14) + c(514, 134, 4, black) +
-    p('M422 300 Q456 306 462 334 Q444 340 426 322 Z') +
-    r(280, 470, 44, 58, 14) + e(310, 532, 62, 18) +
-    e(300, 430, 56, 66),
-);
-
-// ---------------------------------------------------------------- princess
-
-const castle = svg(
-  cloud(500, 100, 110) + cloud(110, 70, 90) +
-    ground(520, 3, 18) +
-    l('M300 40 L300 4') + poly('300,6 342,16 300,28') +
-    r(250, 150, 100, 140) + poly('238,152 300,42 362,152') + c(300, 205, 20) +
-    l('M140 100 L140 52') + poly('140,54 178,64 140,76') +
-    l('M460 100 L460 52') + poly('460,54 498,64 460,76') +
-    r(90, 222, 100, 300) + poly('78,224 140,100 202,224') +
-    r(410, 222, 100, 300) + poly('398,224 460,100 522,224') +
-    p('M120 320 L120 288 Q140 262 160 288 L160 320 Z') + p('M440 320 L440 288 Q460 262 480 288 L480 320 Z') +
-    p('M120 420 L120 388 Q140 362 160 388 L160 420 Z') + p('M440 420 L440 388 Q460 362 480 388 L480 420 Z') +
-    p('M190 522 L190 262 L222 262 L222 284 L252 284 L252 262 L284 262 L284 284 L316 284 L316 262 L348 262 L348 284 L378 284 L378 262 L410 262 L410 522 Z') +
-    p('M258 522 L258 432 Q300 378 342 432 L342 522 Z') + l('M300 405 L300 522') +
-    c(286, 470, 4, black) + c(314, 470, 4, black) +
-    heart(230, 335, 18) + heart(370, 335, 18),
-);
-
-const princess = svg(
-  star(100, 140, 32) + star(500, 130, 28) + star(510, 300, 18) + star(80, 330, 18) +
-    p('M205 200 Q195 340 240 365 L360 365 Q405 340 395 200 Z') +
-    p('M300 300 Q228 330 218 400 Q200 470 140 532 Q300 568 460 532 Q400 470 382 400 Q372 330 300 300 Z') +
-    l('M160 520 Q185 540 210 528 Q235 548 260 534 Q285 552 300 538 Q315 552 340 534 Q365 548 390 528 Q415 540 440 520') +
-    p('M254 312 Q218 360 232 422 Q246 428 252 414 Q248 368 272 338 Z') +
-    p('M346 312 Q382 360 368 422 Q354 428 348 414 Q352 368 328 338 Z') +
-    c(238, 428, 13) + c(362, 428, 13) +
-    r(284, 255, 32, 50, 10) +
-    p('M256 300 L344 300 L334 392 Q300 404 266 392 Z') +
-    c(300, 200, 70) +
-    p('M232 192 Q248 128 300 126 Q352 128 368 192 Q330 162 300 178 Q270 162 232 192 Z') +
-    p('M256 140 L262 96 L282 122 L300 86 L318 122 L338 96 L344 140 Z') + c(300, 126, 7) +
-    eye(276, 206, 9) + eye(324, 206, 9) +
-    l('M286 232 Q300 245 314 232') + c(260, 228, 9) + c(340, 228, 9) +
-    heart(300, 338, 14),
-);
-
-const crown = svg(
-  star(90, 110, 26) + star(510, 100, 30) + star(520, 290, 16) + star(80, 300, 18) +
-    p('M110 450 Q300 428 490 450 Q522 500 492 540 Q300 562 108 540 Q78 500 110 450 Z') +
-    c(98, 548, 13) + c(502, 548, 13) +
-    p('M150 380 L128 205 L215 282 L300 152 L385 282 L472 205 L450 380 Z') +
-    c(128, 194, 20) + c(300, 140, 22) + c(472, 194, 20) +
-    poly('300,232 326,276 300,320 274,276') +
-    c(196, 330, 18) + c(404, 330, 18) +
-    r(150, 380, 300, 72, 16) +
-    e(300, 416, 26, 20) + c(210, 416, 16) + c(390, 416, 16),
-);
-
-// ---------------------------------------------------------------- vehicles
-
-const car = svg(
-  sun(500, 90, 40, 10) + cloud(140, 120, 120) +
-    l('M10 474 L590 474') +
-    p('M78 420 L78 350 Q84 318 132 314 L190 310 L240 230 Q256 214 282 214 L400 214 Q426 214 442 236 L492 310 L522 316 Q548 322 548 352 L548 420 Z') +
-    p('M256 300 L286 240 L336 240 L336 300 Z') +
-    p('M356 300 L356 240 L410 240 Q420 240 426 250 L456 300 Z') +
-    l('M346 312 L346 410') + r(360, 326, 26, 9, 4) + r(306, 326, 26, 9, 4) +
-    e(528, 348, 12, 16) + r(80, 336, 16, 24, 4) +
-    c(182, 420, 52) + c(182, 420, 22) + c(446, 420, 52) + c(446, 420, 22),
-);
-
-const fireTruck = svg(
-  l('M10 488 L590 488') +
-    r(80, 215, 280, 26, 6) + l('M115 215 L115 241 M150 215 L150 241 M185 215 L185 241 M220 215 L220 241 M255 215 L255 241 M290 215 L290 241 M325 215 L325 241') +
-    r(70, 250, 304, 182, 14) +
-    r(248, 284, 100, 110, 10) + l('M298 284 L298 394') +
-    c(160, 340, 42) + c(160, 340, 16) +
-    p('M374 432 L374 270 L470 270 Q492 270 502 290 L542 362 L542 432 Z') +
-    p('M392 290 L466 290 L504 356 L392 356 Z') +
-    r(420, 244, 38, 26, 8) +
-    r(530, 410, 34, 26, 8) + e(534, 382, 10, 13) +
-    c(150, 440, 48) + c(150, 440, 18) + c(456, 440, 48) + c(456, 440, 18),
-);
-
-const train = svg(
-  cloud(430, 140, 120) + cloud(525, 74, 90) + cloud(330, 70, 70) +
-    l('M15 486 L585 486') +
-    c(302, 272, 28) +
-    p('M382 272 L370 190 L432 190 L420 272 Z') + r(360, 174, 82, 22, 8) +
-    r(230, 270, 232, 132, 16) +
-    r(80, 200, 152, 202, 12) + r(108, 232, 96, 72, 12) + r(64, 180, 184, 30, 12) +
-    poly('462,404 532,452 462,452') +
-    r(70, 400, 404, 32, 12) +
-    c(460, 320, 22) +
-    c(130, 444, 40) + c(130, 444, 12) + c(250, 448, 35) + c(250, 448, 11) + c(350, 448, 35) + c(350, 448, 11) +
-    l('M250 448 L350 448'),
-);
-
-const balloon = svg(
-  cloud(110, 200, 130) + cloud(500, 470, 130) + cloud(480, 120, 90) +
-    l('M70 420 q12 -12 24 0 q12 -12 24 0 M470 280 q10 -10 20 0 q10 -10 20 0') +
-    clipped(
-      'M300 90 C420 90 470 180 450 270 C430 350 350 390 330 420 L270 420 C250 390 170 350 150 270 C130 180 180 90 300 90 Z',
-      l('M300 60 C240 170 250 330 285 440') + l('M300 60 C360 170 350 330 315 440') +
-        l('M100 250 Q300 300 500 250') + l('M100 150 Q300 190 500 150'),
-    ) +
-    l('M276 420 L266 480 M324 420 L334 480') +
-    r(252, 480, 96, 64, 10) + l('M252 512 L348 512'),
-);
-
-// ------------------------------------------------------------------- space
-
-const rocket = svg(
-  star(95, 120, 28) + star(505, 190, 22) + star(90, 410, 18) + star(520, 470, 26) + star(160, 260, 12) +
-    c(480, 92, 34) + e(480, 92, 58, 14, 'fill="none"') +
-    p('M120 300 A44 44 0 1 0 172 360 A36 36 0 1 1 120 300 Z') +
-    p('M255 440 Q300 570 345 440 Z') + p('M276 440 Q300 512 324 440 Z') +
-    p('M242 350 L182 452 L252 432 Z') + p('M358 350 L418 452 L348 432 Z') +
-    clipped('M300 80 C382 150 372 330 356 440 L244 440 C228 330 218 150 300 80 Z', l('M200 175 Q300 200 400 175') + l('M200 400 L400 400')) +
-    c(300, 260, 42) + c(300, 260, 26) + c(300, 350, 14),
-);
-
-const planet = svg(
-  star(80, 90, 26) + star(530, 420, 22) + star(110, 480, 30) + star(450, 540, 14) + star(200, 80, 12) +
-    c(505, 110, 40) + c(492, 98, 9) + c(520, 125, 7) +
-    e(300, 310, 245, 72) + e(300, 310, 172, 40) +
-    clipped('M150 310 A150 150 0 1 1 450 310 A150 150 0 1 1 150 310 Z',
-      l('M100 220 Q300 250 500 220') + l('M100 380 Q300 410 500 380') + c(250, 270, 22) + c(355, 250, 15)) +
-    p('M55 310 A245 72 0 0 0 545 310 L472 310 A172 40 0 0 1 128 310 Z'),
-);
-
-const astronaut = svg(
-  star(80, 90, 24) + star(520, 80, 28) + star(530, 330, 16) + star(70, 340, 16) +
-    c(510, 500, 46) + c(495, 486, 10) + c(525, 515, 8) +
-    r(182, 222, 236, 206, 32) +
-    r(220, 446, 66, 92, 22) + r(314, 446, 66, 92, 22) +
-    e(250, 542, 46, 20) + e(350, 542, 46, 20) +
-    p('M218 318 Q160 350 150 420 Q170 434 186 420 Q196 372 228 360 Z') +
-    p('M382 318 Q440 350 450 420 Q430 434 414 420 Q404 372 372 360 Z') +
-    c(166, 432, 22) + c(434, 432, 22) +
-    r(208, 296, 184, 172, 44) +
-    r(250, 340, 100, 62, 12) + c(276, 371, 11) + c(324, 371, 11) +
-    c(300, 196, 108) +
-    e(300, 204, 74, 60) + l('M256 176 Q270 158 294 156') +
-    r(286, 80, 28, 14, 6),
-);
-
-const ufo = svg(
-  star(80, 90, 26) + star(520, 70, 22) + star(90, 330, 14) + star(510, 300, 18) +
-    poly('240,380 360,380 450,560 150,560') +
-    p('M196 304 Q196 166 300 166 Q404 166 404 304 Z') +
-    l('M278 210 Q262 176 250 166 M322 210 Q338 176 350 166') + c(250, 164, 9) + c(350, 164, 9) +
-    e(300, 255, 44, 48) +
-    e(282, 252, 11, 15, black) + e(318, 252, 11, 15, black) + l('M286 280 Q300 290 314 280') +
-    e(300, 372, 92, 24) +
-    e(300, 322, 214, 58) +
-    c(150, 326, 14) + c(222, 348, 14) + c(300, 356, 14) + c(378, 348, 14) + c(450, 326, 14),
-);
-
-// ----------------------------------------------------------------- ocean
-
-const fish = svg(
-  p('M0 600 L0 540 Q120 520 240 548 Q360 520 480 548 Q540 538 600 540 L600 600 Z') +
-    p('M480 545 Q450 470 492 410 Q522 470 505 545 Z') + p('M60 545 Q30 480 70 430 Q95 490 82 545 Z') +
-    c(110, 205, 16) + c(88, 150, 11) + c(118, 100, 8) + c(520, 140, 12) + c(545, 100, 8) +
-    p('M230 210 Q290 120 362 214 Z') + p('M260 392 Q290 450 332 396 Z') +
-    p('M400 300 L522 218 Q502 300 522 382 Z') +
-    clipped('M140 300 A150 105 0 1 1 440 300 A150 105 0 1 1 140 300 Z', l('M265 150 Q240 300 265 450') + l('M335 150 Q310 300 335 450')) +
-    c(195, 285, 22) + eye(192, 288, 10) +
-    l('M146 322 Q160 332 174 324'),
-);
-
-function tentacle(x: number) {
-  return p(`M${x} 360 Q${x - 32} 450 ${x - 12} 520 Q${x + 8} 548 ${x + 26} 520 Q${x + 4} 450 ${x + 36} 360 Z`);
-}
-
-const octopus = svg(
-  ground(560, 4, 6) +
-    star(520, 520, 46, 22) + c(90, 140, 14) + c(70, 90, 9) + c(510, 120, 12) +
-    p('M60 560 Q70 500 120 495 Q165 500 170 560 Z') + l('M90 560 L105 505 M120 560 L120 500 M150 560 L135 505') +
-    tentacle(150) + tentacle(208) + tentacle(266) + tentacle(324) + tentacle(382) + tentacle(436) +
-    p('M140 380 Q120 120 300 110 Q480 120 460 380 Q300 420 140 380 Z') +
-    c(245, 270, 32) + c(355, 270, 32) + eye(250, 276, 14) + eye(350, 276, 14) +
-    l('M262 328 Q300 352 338 328') + c(205, 316, 14) + c(395, 316, 14) +
-    c(300, 168, 18) + c(222, 190, 12) + c(380, 190, 14),
-);
-
-const turtle = svg(
-  ground(470, 4, 10) +
-    c(90, 150, 14) + c(116, 104, 9) + c(500, 120, 12) +
-    poly('112,382 68,394 112,404') +
-    e(182, 430, 36, 42) + e(420, 430, 36, 42) +
-    p('M468 345 L506 316 L514 372 L468 378 Z') +
-    c(530, 318, 48) + eye(542, 306, 10) + l('M506 340 Q522 352 540 346') +
-    clipped('M128 382 Q138 200 300 200 Q462 200 472 382 Z',
-      poly('250,248 350,248 392,310 350,372 250,372 208,310') +
-      l('M250 248 L210 160 M350 248 L390 160 M392 310 L520 300 M208 310 L80 300 M250 372 L240 400 M350 372 L360 400')) +
-    r(108, 370, 384, 30, 15),
-);
-
-const whale = svg(
-  p('M0 600 L0 500 Q75 480 150 500 Q225 480 300 500 Q375 480 450 500 Q525 480 600 500 L600 600 Z') +
-    l('M230 196 Q218 150 182 122 M230 196 Q230 140 230 98 M230 196 Q244 150 280 122') + c(176, 112, 9) + c(230, 86, 9) + c(286, 112, 9) +
-    clipped('M80 330 Q90 200 262 200 Q420 200 470 300 L540 240 Q562 280 546 320 Q562 360 540 400 L470 350 Q430 432 270 432 Q90 432 80 330 Z',
-      l('M40 360 Q270 335 490 345') + l('M150 380 L150 450 M200 384 L200 450 M250 386 L250 450 M300 386 L300 450 M350 380 L350 450')) +
-    eye(168, 298, 11) + l('M106 348 Q146 370 190 355') +
-    p('M262 388 Q280 452 330 438 Q306 412 300 386 Z'),
-);
-
-// ----------------------------------------------------------------- magic
-
-const unicorn = svg(
-  star(100, 120, 30) + star(520, 470, 22) + star(90, 470, 18) + heart(500, 110, 26) + heart(520, 280, 16) +
-    p('M340 150 Q260 140 220 200 Q180 262 140 300 Q110 332 130 370 Q150 402 200 392 Q240 386 260 400 Q290 470 300 535 L440 535 Q430 420 420 330 Q410 200 340 150 Z') +
-    poly('298,168 312,92 352,158') + poly('310,152 316,118 336,150') +
-    clipped('M248 178 L212 48 L288 160 Z', l('M200 150 L290 110 M195 110 L280 75 M190 70 L270 40')) +
-    p('M330 150 Q420 140 442 205 Q492 228 474 290 Q512 332 472 372 Q502 420 462 452 Q494 502 444 535 L410 535 Q402 420 390 330 Q378 222 330 150 Z') +
-    l('M430 220 Q420 280 440 320 M450 380 Q432 420 450 470') +
-    l('M216 252 Q236 272 256 252') + l('M220 258 L212 268 M236 264 L234 276 M252 258 L258 270') +
-    c(150, 345, 5, black) + l('M160 378 Q180 388 196 380') + c(228, 318, 14),
-);
-
-const rainbow = svg(
-  sun(510, 105, 40, 12) +
-    p('M50 440 A250 250 0 0 1 550 440 Z') + p('M85 440 A215 215 0 0 1 515 440 Z') +
-    p('M120 440 A180 180 0 0 1 480 440 Z') + p('M155 440 A145 145 0 0 1 445 440 Z') +
-    p('M190 440 A110 110 0 0 1 410 440 Z') +
-    cloud(140, 480, 200) + cloud(460, 480, 200) +
-    eye(120, 440, 7) + eye(160, 440, 7) + l('M126 458 Q140 468 154 458') +
-    eye(440, 440, 7) + eye(480, 440, 7) + l('M446 458 Q460 468 474 458') +
-    star(90, 120, 26) + star(300, 90, 18) + heart(200, 150, 18) + star(300, 540, 22) + heart(80, 550, 16) + heart(520, 550, 16),
-);
-
-const mushroomHouse = svg(
-  ground(515, 4, 10) +
-    tinyFlower(90, 440, 16) + tinyFlower(520, 450, 14) +
-    p('M220 330 Q200 470 210 520 L390 520 Q400 470 380 330 Z') +
-    c(255, 395, 22) + l('M233 395 L277 395 M255 373 L255 417') +
-    p('M266 520 L266 440 Q300 400 334 440 L334 520 Z') + c(322, 482, 5, black) +
-    p('M100 340 Q110 140 300 130 Q490 140 500 340 Q300 382 100 340 Z') +
-    c(190, 255, 26) + c(300, 190, 30) + c(410, 255, 26) + c(262, 296, 17) + c(350, 300, 15) + c(140, 315, 12) + c(460, 315, 12) +
-    e(300, 560, 30, 12) + e(250, 586, 26, 10) + e(350, 586, 26, 10),
-);
-
-// ----------------------------------------------------------------- nature
-
-const flowerPot = svg(
-  sun(90, 90, 34, 10) + cloud(480, 110, 120) +
-    r(290, 300, 20, 158) +
-    p('M300 400 Q230 352 196 386 Q236 432 300 412 Z') + p('M300 370 Q370 322 404 356 Q364 402 300 382 Z') +
-    petals(300, 210, 8, 82, 26, 50) +
-    c(300, 210, 46) + eye(284, 202, 7) + eye(316, 202, 7) + l('M284 226 Q300 238 316 226') +
-    p('M212 452 L388 452 L368 562 L232 562 Z') +
-    r(196, 440, 208, 36, 12) + heart(300, 518, 16),
-);
-
-const butterfly = svg(
-  g(
-    tinyFlower(110, 500, 18) +
-      p('M292 280 Q200 116 108 160 Q58 200 108 282 Q170 322 292 302 Z') +
-      p('M292 312 Q180 320 150 400 Q160 472 232 452 Q282 422 296 332 Z') +
-      c(172, 220, 32) + c(172, 220, 14) + c(118, 240, 12) + c(226, 392, 22) + c(190, 430, 10) +
-      l('M292 198 Q272 150 255 138') + c(252, 134, 8),
-  ) +
-    mirror(
-      tinyFlower(110, 500, 18) +
-        p('M292 280 Q200 116 108 160 Q58 200 108 282 Q170 322 292 302 Z') +
-        p('M292 312 Q180 320 150 400 Q160 472 232 452 Q282 422 296 332 Z') +
-        c(172, 220, 32) + c(172, 220, 14) + c(118, 240, 12) + c(226, 392, 22) + c(190, 430, 10) +
-        l('M292 198 Q272 150 255 138') + c(252, 134, 8),
-    ) +
-    e(300, 330, 17, 96) + c(300, 218, 24) + eye(292, 214, 4) + eye(308, 214, 4) + l('M293 226 Q300 231 307 226'),
-);
-
-const appleTree = svg(
-  cloud(500, 90, 100) +
-    ground(540, 4, 10) +
-    p('M262 560 Q276 450 270 352 L330 352 Q324 450 340 560 Z') + e(300, 452, 14, 22) +
-    p(scallopPath(300, 245, 175, 13)) +
-    c(220, 200, 22) + c(300, 150, 22) + c(380, 205, 22) + c(250, 300, 22) + c(350, 300, 22) + c(170, 280, 18) + c(430, 280, 18) +
-    l('M220 178 L226 166 M300 128 L306 116 M380 183 L386 171 M250 278 L256 266 M350 278 L356 266') +
-    c(450, 520, 20) + c(150, 525, 20),
-);
-
-const happySun = svg(
-  (() => {
-    let s = '';
-    for (let i = 0; i < 14; i++) {
-      const a = (i / 14) * Math.PI * 2;
-      const a1 = a - 0.16;
-      const a2 = a + 0.16;
-      const pt = (ang: number, rad: number) => `${Math.round(300 + Math.cos(ang) * rad)},${Math.round(290 + Math.sin(ang) * rad)}`;
-      s += poly(`${pt(a1, 140)} ${pt(a, 225)} ${pt(a2, 140)}`);
-    }
-    return s;
-  })() +
-    c(300, 290, 150) +
-    e(248, 268, 44, 32) + e(352, 268, 44, 32) + l('M292 262 Q300 254 308 262') + l('M204 262 L170 250 M396 262 L430 250') +
-    l('M248 335 Q300 380 352 335') + c(220, 330, 16) + c(380, 330, 16) +
-    cloud(110, 560, 160) + cloud(480, 570, 170),
-);
-
-// ------------------------------------------------------------------- farm
-
-const cow = svg(
-  ground(560, 4, 8) +
-    p('M218 152 Q206 100 238 88 Q238 128 256 152 Z') + p('M382 152 Q394 100 362 88 Q362 128 344 152 Z') +
-    e(160, 232, 58, 26) + e(150, 232, 32, 12) + e(440, 232, 58, 26) + e(450, 232, 32, 12) +
-    p('M228 445 Q300 470 372 445 L372 466 Q300 492 228 466 Z') + c(300, 500, 26) + l('M290 506 L310 506') +
-    p('M200 160 Q300 120 400 160 Q432 260 400 336 L200 336 Q168 260 200 160 Z') +
-    p('M222 180 Q262 168 266 210 Q252 242 222 226 Q206 202 222 180 Z') + p('M360 170 Q392 160 396 196 Q386 220 362 210 Q348 190 360 170 Z') +
-    eye(252, 248, 15) + eye(348, 248, 15) +
-    e(300, 382, 122, 74) +
-    e(258, 380, 14, 20, black) + e(342, 380, 14, 20, black) + l('M262 424 Q300 440 338 424'),
-);
-
-const pig = svg(
-  e(300, 548, 250, 30) +
-    r(170, 440, 46, 92, 14) + r(238, 452, 46, 82, 14) + r(330, 452, 46, 82, 14) + r(396, 440, 46, 92, 14) +
-    l('M478 360 q32 -20 22 -42 q-16 -20 -26 0 q-6 26 26 20') +
-    e(310, 380, 185, 128) +
-    poly('118,248 108,186 168,226') + poly('206,226 236,176 248,240') +
-    c(165, 320, 96) +
-    e(92, 338, 36, 46) + e(84, 324, 6, 11, black) + e(84, 352, 6, 11, black) +
-    eye(172, 298, 13) + l('M140 384 Q165 400 192 384') + c(210, 352, 14) +
-    c(350, 330, 20) + c(400, 410, 14),
-);
-
-function chick(cx: number, cy: number) {
-  return e(cx, cy, 38, 32) + c(cx - 24, cy - 34, 23) + poly(`${cx - 46},${cy - 36} ${cx - 62},${cy - 30} ${cx - 46},${cy - 26}`) +
-    eye(cx - 30, cy - 40, 5) + l(`M${cx - 4} ${cy - 2} Q${cx + 14} ${cy + 14} ${cx + 22} ${cy - 6}`) +
-    l(`M${cx - 10} ${cy + 32} L${cx - 10} ${cy + 46} M${cx + 10} ${cy + 32} L${cx + 10} ${cy + 46}`);
-}
-
-const hen = svg(
-  ground(540, 4, 8) +
-    l('M300 470 L300 522 M280 532 L300 522 L320 532 M360 470 L360 522 M340 532 L360 522 L380 532') +
-    p('M466 330 Q540 250 524 196 Q486 248 448 282 Z') + p('M476 360 Q556 320 566 262 Q520 300 470 320 Z') +
-    e(330, 370, 165, 112) +
-    p('M184 188 Q190 150 210 170 Q222 138 242 164 Q258 138 266 182 Z') +
-    c(226, 232, 62) +
-    poly('166,226 128,242 166,256') + e(172, 274, 12, 18) +
-    eye(214, 222, 9) +
-    p('M282 352 Q352 300 424 340 Q404 424 302 412 Z') + l('M310 380 Q350 370 392 380') +
-    chick(96, 480) + chick(520, 486),
-);
-
-const barn = svg(
-  sun(90, 90, 32, 10) + cloud(450, 90, 110) +
-    ground(555, 3, 8) +
-    r(20, 470, 100, 12) + r(20, 510, 100, 12) + r(26, 448, 18, 108, 4) + r(84, 448, 18, 108, 4) +
-    r(506, 250, 72, 310) + p('M506 250 Q542 186 578 250 Z') + l('M506 330 L578 330 M506 410 L578 410') +
-    p('M120 560 L120 300 L300 180 L480 300 L480 560 Z') +
-    p('M96 312 L300 166 L502 312 L502 280 L300 134 L96 280 Z') +
-    r(260, 262, 80, 70, 6) + l('M300 262 L300 332 M260 297 L340 297') +
-    r(212, 400, 176, 160, 4) + l('M212 400 L388 560 M388 400 L212 560'),
-);
-
-// ---------------------------------------------------------------- fantasy
-
-const dragon = svg(
-  ground(540, 4, 8) +
-    p('M380 470 Q520 482 530 382 Q536 344 558 330 L574 362 Q556 366 552 392 Q542 502 380 502 Z') +
-    poly('556,330 592,318 574,364') +
-    p('M360 262 Q450 150 522 170 Q492 200 502 232 Q462 232 462 272 Q422 262 402 312 Z') +
-    poly('352,210 392,222 358,244') + poly('372,272 410,292 368,310') + poly('390,340 424,362 384,374') +
-    e(300, 404, 112, 122) +
-    clipped('M225 420 A65 86 0 1 1 355 420 A65 86 0 1 1 225 420 Z', l('M200 370 L400 370 M200 410 L400 410 M200 450 L400 450 M200 490 L400 490')) +
-    e(240, 520, 46, 22) + e(352, 520, 46, 22) +
-    e(218, 382, 22, 34) +
-    poly('298,148 322,88 342,158') + poly('240,144 246,84 278,140') +
-    c(272, 222, 86) +
-    e(205, 254, 56, 40) + c(178, 244, 5, black) + c(198, 242, 5, black) +
-    eye(286, 202, 14) + l('M178 276 Q205 290 232 280') +
-    p('M150 258 Q110 232 88 252 Q100 262 84 278 Q116 290 150 268 Z'),
-);
-
-const monster = svg(
-  star(80, 100, 24) + star(520, 110, 20) + heart(520, 300, 18) + heart(80, 320, 16) +
-    e(232, 552, 46, 22) + e(368, 552, 46, 22) +
-    p('M230 200 Q198 140 214 108 Q240 160 262 182 Z') + p('M370 200 Q402 140 386 108 Q360 160 338 182 Z') +
-    p('M176 332 Q110 322 100 260 Q120 250 130 270 Q142 300 182 300 Z') + p('M424 332 Q490 322 500 260 Q480 250 470 270 Q458 300 418 300 Z') +
-    p('M170 520 Q140 300 200 220 Q300 120 400 220 Q460 300 430 520 L405 545 L380 520 L355 545 L330 520 L305 545 L280 520 L255 545 L230 520 L205 545 Z') +
-    c(300, 250, 56) + c(300, 255, 28) + eye(300, 258, 13) +
-    p('M240 340 Q300 404 360 340 Q300 362 240 340 Z') + poly('272,348 282,366 292,351') + poly('308,351 318,366 328,348') +
-    c(250, 440, 20) + c(342, 458, 26) + c(298, 412, 12),
-);
-
-export const PAGES: ColoringPage[] = [
-  { id: 'lion', title: 'Leo the Lion', category: 'animals', svg: lion, symmetric: true },
-  { id: 'puppy', title: 'Happy Puppy', category: 'animals', svg: puppy, symmetric: true },
-  { id: 'cat', title: 'Kitty & Yarn', category: 'animals', svg: cat },
-  { id: 'elephant', title: 'Ellie Elephant', category: 'animals', svg: elephant },
-  { id: 'owl', title: 'Night Owl', category: 'animals', svg: owl },
-  { id: 'baby-dino', title: 'Baby Dino', category: 'dinosaurs', svg: babyDino },
-  { id: 'trex', title: 'Rex the T-Rex', category: 'dinosaurs', svg: trex },
-  { id: 'stegosaurus', title: 'Spiky Stego', category: 'dinosaurs', svg: stegosaurus },
-  { id: 'brachiosaurus', title: 'Long-Neck Dino', category: 'dinosaurs', svg: brachiosaurus },
-  { id: 'castle', title: 'Fairytale Castle', category: 'princess', svg: castle, symmetric: true },
-  { id: 'princess', title: 'Princess Rosie', category: 'princess', svg: princess, symmetric: true },
-  { id: 'crown', title: 'Royal Crown', category: 'princess', svg: crown, symmetric: true },
-  { id: 'car', title: 'Zoom Zoom Car', category: 'vehicles', svg: car },
-  { id: 'fire-truck', title: 'Fire Truck', category: 'vehicles', svg: fireTruck },
-  { id: 'train', title: 'Choo-Choo Train', category: 'vehicles', svg: train },
-  { id: 'balloon', title: 'Hot Air Balloon', category: 'vehicles', svg: balloon },
-  { id: 'rocket', title: 'Rocket Ship', category: 'space', svg: rocket },
-  { id: 'astronaut', title: 'Astronaut', category: 'space', svg: astronaut, symmetric: true },
-  { id: 'planet', title: 'Ringed Planet', category: 'space', svg: planet },
-  { id: 'ufo', title: 'Friendly Alien', category: 'space', svg: ufo, symmetric: true },
-  { id: 'fish', title: 'Bubbles the Fish', category: 'ocean', svg: fish },
-  { id: 'octopus', title: 'Silly Octopus', category: 'ocean', svg: octopus },
-  { id: 'turtle', title: 'Sea Turtle', category: 'ocean', svg: turtle },
-  { id: 'whale', title: 'Wally the Whale', category: 'ocean', svg: whale },
-  { id: 'unicorn', title: 'Sparkle Unicorn', category: 'magic', svg: unicorn },
-  { id: 'rainbow', title: 'Rainbow Clouds', category: 'magic', svg: rainbow, symmetric: true },
-  { id: 'mushroom-house', title: 'Fairy House', category: 'magic', svg: mushroomHouse },
-  { id: 'flower', title: 'Sunny Flower', category: 'nature', svg: flowerPot },
-  { id: 'butterfly', title: 'Butterfly', category: 'nature', svg: butterfly, symmetric: true },
-  { id: 'apple-tree', title: 'Apple Tree', category: 'nature', svg: appleTree },
-  { id: 'sun', title: 'Cool Sun', category: 'nature', svg: happySun, symmetric: true },
-  { id: 'cow', title: 'Moo Cow', category: 'farm', svg: cow, symmetric: true },
-  { id: 'pig', title: 'Piggy', category: 'farm', svg: pig },
-  { id: 'hen', title: 'Hen & Chicks', category: 'farm', svg: hen },
-  { id: 'barn', title: 'Red Barn', category: 'farm', svg: barn },
-  { id: 'dragon', title: 'Little Dragon', category: 'fantasy', svg: dragon },
-  { id: 'monster', title: 'Fuzzy Monster', category: 'fantasy', svg: monster, symmetric: true },
-];
-
-// ----------------------------------------------------------- picture pages
-
+// Line-art images live in ./pictures (full size) and ./pictures/thumbs (gallery previews).
 const pictureUrls = import.meta.glob('./pictures/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 const thumbUrls = import.meta.glob('./pictures/thumbs/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 
@@ -601,7 +41,109 @@ function picture(id: string, title: string, category: string, gap = 1): Coloring
   return { id, title, category, image: pictureUrls[`./pictures/${id}.png`], thumb: thumbUrls[`./pictures/thumbs/${id}.png`], gap };
 }
 
-PAGES.push(
+export const PAGES: ColoringPage[] = [
+  // ---- colouring book (100 pages)
+  picture('balloon-boy', 'Balloon Boy', 'party', 2),
+  picture('planting-flowers', 'Planting Flowers', 'flowers', 2),
+  picture('rainy-day-friends', 'Rainy Day Friends', 'rainy', 2),
+  picture('off-to-school', 'Off to School', 'kids', 2),
+  picture('girl-in-the-garden', 'Girl in the Garden', 'flowers', 2),
+  picture('little-gardener', 'Little Gardener', 'flowers', 2),
+  picture('happy-dino', 'Happy Dino', 'dinosaurs', 5),
+  picture('balloon-parade', 'Balloon Parade', 'party', 2),
+  picture('penguin-pal', 'Penguin Pal', 'animals', 2),
+  picture('floating-away', 'Floating Away', 'party', 2),
+  picture('dino-bouquet', 'Dino Bouquet', 'dinosaurs', 2),
+  picture('spotty-dino', 'Spotty Dino', 'dinosaurs', 2),
+  picture('umbrella-girl', 'Umbrella Girl', 'rainy', 2),
+  picture('busy-boy', 'Busy Boy', 'kids', 2),
+  picture('up-up-and-away', 'Up, Up and Away', 'party', 2),
+  picture('rocket-rider', 'Rocket Rider', 'space', 2),
+  picture('dino-in-the-park', 'Dino in the Park', 'dinosaurs', 4),
+  picture('jumping-for-joy', 'Jumping for Joy', 'kids', 2),
+  picture('elephant-flowers', 'Elephant & Flowers', 'animals', 2),
+  picture('little-astronaut', 'Little Astronaut', 'space', 2),
+  picture('smiley-dino', 'Smiley Dino', 'dinosaurs', 2),
+  picture('leafy-friend', 'Leafy Friend', 'silly', 2),
+  picture('school-friends', 'School Friends', 'kids', 2),
+  picture('rainy-day-boy', 'Rainy Day Boy', 'rainy', 2),
+  picture('potted-pal', 'Potted Pal', 'silly', 2),
+  picture('market-day', 'Market Day', 'kids', 2),
+  picture('space-explorer', 'Space Explorer', 'space', 2),
+  picture('dragon-dino', 'Dragon Dino', 'dinosaurs', 2),
+  picture('flower-princess', 'Flower Princess', 'kids', 2),
+  picture('flowers-for-you', 'Flowers for You', 'kids', 2),
+  picture('balloon-ride', 'Balloon Ride', 'party', 2),
+  picture('sunny-sunflower', 'Sunny Sunflower', 'flowers', 2),
+  picture('bubble-dino', 'Bubble Dino', 'dinosaurs', 3),
+  picture('sunflower-kid', 'Sunflower Kid', 'flowers', 2),
+  picture('balloon-buddy', 'Balloon Buddy', 'silly', 2),
+  picture('firefighter', 'Firefighter', 'kids', 2),
+  picture('wise-owl', 'Wise Owl', 'animals', 2),
+  picture('starry-night', 'Starry Night', 'space', 3),
+  picture('little-scientist', 'Little Scientist', 'kids', 2),
+  picture('googly-monster', 'Googly Monster', 'silly', 2),
+  picture('flower-pots', 'Flower Pots', 'flowers', 3),
+  picture('umbrella-buddies', 'Umbrella Buddies', 'rainy', 2),
+  picture('baby-dragon', 'Baby Dragon', 'dinosaurs', 2),
+  picture('owl-in-the-tree', 'Owl in the Tree', 'animals', 2),
+  picture('garden-girl', 'Garden Girl', 'kids', 2),
+  picture('cloudy-day', 'Cloudy Day', 'kids', 2),
+  picture('smiling-flower', 'Smiling Flower', 'flowers', 4),
+  picture('elephant-family', 'Elephant Family', 'animals', 2),
+  picture('dino-bubbles', 'Dino & Bubbles', 'dinosaurs', 2),
+  picture('sunny-boy', 'Sunny Boy', 'kids', 2),
+  picture('fruity-friend', 'Fruity Friend', 'treats', 2),
+  picture('three-friends', 'Three Friends', 'rainy', 2),
+  picture('ice-cream-dino', 'Ice Cream Dino', 'dinosaurs', 2),
+  picture('umbrella-dino', 'Umbrella Dino', 'dinosaurs', 2),
+  picture('bubble-buddy', 'Bubble Buddy', 'silly', 2),
+  picture('party-girl', 'Party Girl', 'party', 2),
+  picture('flower-boy', 'Flower Boy', 'flowers', 2),
+  picture('adventure-boy', 'Adventure Boy', 'kids', 2),
+  picture('spacewalk', 'Spacewalk', 'space', 2),
+  picture('astronaut-kid', 'Astronaut Kid', 'space', 2),
+  picture('owl-in-bloom', 'Owl in Bloom', 'animals', 2),
+  picture('little-princess', 'Little Princess', 'kids', 2),
+  picture('cupcake-cutie', 'Cupcake Cutie', 'treats', 2),
+  picture('birthday-cake', 'Birthday Cake', 'treats', 2),
+  picture('watering-the-garden', 'Watering the Garden', 'flowers', 2),
+  picture('bunch-of-flowers', 'Bunch of Flowers', 'flowers', 2),
+  picture('happy-sunflower', 'Happy Sunflower', 'flowers', 2),
+  picture('city-runner', 'City Runner', 'kids', 3),
+  picture('flower-fun', 'Flower Fun', 'kids', 2),
+  picture('fluffy-sheep', 'Fluffy Sheep', 'animals', 2),
+  picture('village-run', 'Village Run', 'kids', 2),
+  picture('flower-cupcake', 'Flower Cupcake', 'treats', 2),
+  picture('super-balloon', 'Super Balloon', 'party', 2),
+  picture('night-owl', 'Night Owl', 'animals', 2),
+  picture('froggy', 'Froggy', 'animals', 3),
+  picture('flower-friend', 'Flower Friend', 'flowers', 2),
+  picture('cheeky-dino', 'Cheeky Dino', 'dinosaurs', 2),
+  picture('duck-bath', 'Duck Bath', 'animals', 2),
+  picture('rooster', 'Rooster', 'animals', 2),
+  picture('rainy-dino', 'Rainy Dino', 'dinosaurs', 2),
+  picture('party-bear', 'Party Bear', 'party', 2),
+  picture('balloon-friends', 'Balloon Friends', 'party', 2),
+  picture('jungle-dino', 'Jungle Dino', 'dinosaurs', 2),
+  picture('starry-balloons', 'Starry Balloons', 'party', 2),
+  picture('busy-gardener', 'Busy Gardener', 'flowers', 2),
+  picture('flying-hero', 'Flying Hero', 'kids', 2),
+  picture('dino-picnic', 'Dino Picnic', 'dinosaurs', 2),
+  picture('snack-time-dino', 'Snack Time Dino', 'dinosaurs', 2),
+  picture('potted-sunflower', 'Potted Sunflower', 'flowers', 2),
+  picture('turtle-shelter', 'Turtle Shelter', 'animals', 2),
+  picture('star-buddy', 'Star Buddy', 'silly', 2),
+  picture('popcorn-party', 'Popcorn Party', 'party', 2),
+  picture('star-explorer', 'Star Explorer', 'kids', 3),
+  picture('fire-chief', 'Fire Chief', 'kids', 2),
+  picture('hot-air-balloon', 'Hot Air Balloon', 'party', 2),
+  picture('dancing-flower', 'Dancing Flower', 'flowers', 3),
+  picture('umbrella-day', 'Umbrella Day', 'rainy', 2),
+  picture('dessert-dino', 'Dessert Dino', 'dinosaurs', 2),
+  picture('superhero', 'Superhero', 'kids', 2),
+  picture('dino-explorer', 'Dino Explorer', 'dinosaurs', 2),
+  // ---- extra pictures
   picture('puppy-sunny', 'Sunny Puppy', 'animals'),
   picture('puppy-puddle', 'Puddle Puppy', 'animals'),
   picture('puppy-party', 'Party Puppy', 'animals'),
@@ -619,7 +161,7 @@ PAGES.push(
   picture('elf-stocking', 'Elf & Stocking', 'christmas'),
   picture('elf-snowflakes', 'Elf & Snowflakes', 'christmas'),
   picture('elf-tree', 'Elf & Christmas Tree', 'christmas'),
-);
+];
 
 export const getPage = (id: string) => PAGES.find((p) => p.id === id);
 export const getCategory = (id: string) => CATEGORIES.find((c) => c.id === id);

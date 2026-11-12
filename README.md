@@ -15,13 +15,13 @@ It runs entirely in the browser, with no accounts, no tracking and no server. Sa
 | 🌈 **Rainbow & ✨ Glitter brushes** | Brushes that change colour as you paint, or leave sparkles. |
 | 🦋 **Mirror mode** | Everything you do is copied to the other side, which suits butterflies, faces and castles. |
 | ⭐ **Stickers** | 28 stickers to stamp onto finished pictures. |
-| 📚 **37 original pages** | In 10 themes: animals, dinosaurs, princesses, vehicles, space, sea, unicorns, nature, farm and fantasy. |
+| 📚 **117 colouring pages** | In 11 themes: kids & friends, dinosaurs, animals, flowers, balloons & parties, space, rainy days, treats, silly friends, angels and Christmas elves. |
 | 📷 **Your own pictures** | Upload PNG / JPG / SVG / WEBP or take a photo. The lines are found automatically, with sliders for contrast, line sensitivity, thickness, speck clean-up and *Leak guard*. You can preview the colouring spaces before you start. |
 | 🎨 **48-colour palette** | Plus a rainbow slider, a full colour picker and a 🎲 *Surprise colour* button. |
 | ↩️ **Undo / redo** | Up to 60 steps, using little memory. |
 | 🔍 **Zoom & pan** | Pinch, scroll wheel, the + / − buttons or the *Move* tool. |
 | 💾 **My Masterpieces** | Saves automatically to the browser (IndexedDB), so children can come back to unfinished pictures. |
-| 🖼️ **Download & print** | High-resolution PNG (3200 × 3200 for built-in pages) and a print view with only the picture. |
+| 🖼️ **Download & print** | High-resolution PNG (up to 3200 px tall) and a print view with only the picture. |
 | 🎉 **Celebration** | Confetti and a cheer when a child taps *I'm done!* |
 | 🌌 **Background themes** | Sunshine, Ocean, Meadow, Candy, Space and Plain. |
 
@@ -106,15 +106,16 @@ Children's saved pictures are kept in their own browser, so updates never delete
 
 ### Adding your own colouring pages
 
-Pages are SVG drawings in `src/data/pages.ts`. They use the helpers in `src/data/svgKit.ts`, drawn on a 600 × 600 grid. To add one:
+Pages are black-on-white line-art images in `src/data/pictures/`, with small previews in `src/data/pictures/thumbs/`. To add one:
 
-1. Write the drawing, for example:
+1. Save the picture as `src/data/pictures/my-page.png`, plus a small copy (about 270 px wide) as `src/data/pictures/thumbs/my-page.png`. Any shape works: portrait, landscape or square.
+2. Add a line to `PAGES` in `src/data/pages.ts`:
    ```ts
-   const myPage = svg(c(300, 300, 150) + eye(260, 280, 12) + eye(340, 280, 12));
+   picture('my-page', 'My Page', 'animals', 2),
    ```
-2. Add `{ id: 'my-page', title: 'My Page', category: 'animals', svg: myPage }` to `PAGES`.
+   The last number is the page's *Leak guard*. Use 1–2 for clean, bold lines, and 3–5 if the drawing has small gaps.
 
-Keep outlines closed and give shapes a white fill, so shapes in front hide the lines behind them. Use `clipped()` for stripes that must meet an edge exactly.
+Pictures with thick, closed outlines and no grey shading work best.
 
 ---
 
@@ -125,8 +126,8 @@ src/
   App.tsx                 hash router (works on any static host)
   screens/                Home, Gallery, Upload, Masterpieces, Workspace
   components/             toolbar, palette, modals, confetti, logo …
-  data/pages.ts           the 37 built-in colouring pages
-  data/svgKit.ts          SVG drawing helpers
+  data/pages.ts           the list of built-in colouring pages
+  data/pictures/          the page images (+ thumbs/ for gallery previews)
   lib/engine.ts           colouring engine: layers, fill, smart brush, stickers, export
   lib/regions.ts          region detection (+ regions.worker.ts)
   lib/imageProcessing.ts  upload → line art conversion
